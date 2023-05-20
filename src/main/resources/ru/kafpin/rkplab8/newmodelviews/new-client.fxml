@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kafpin.rkplab8.controllers.NewClientController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="440.4" prefWidth="610.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Фамилия" />
+            <TextField fx:id="surnTF" />
+            <Label text="Имя" />
+            <TextField fx:id="nameTF" />
+            <Label text="Отчество" />
+            <TextField fx:id="patrTF" />
+            <Label prefHeight="18.0" prefWidth="106.0" text="Номер телефона" />
+            <TextField fx:id="phoneTF" />
+            <Label prefHeight="18.0" prefWidth="75.0" text="Тип лица" />
+            <RadioButton fx:id="rIndividual" mnemonicParsing="false" prefHeight="18.0" prefWidth="98.0" selected="true" text="Физическое">
+               <toggleGroup>
+                  <ToggleGroup fx:id="personType" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rLegal" mnemonicParsing="false" prefHeight="18.0" prefWidth="108.0" text="Юридическое" toggleGroup="$personType" />
+            <Label prefHeight="18.0" prefWidth="48.0" text="Город" />
+            <TextField fx:id="cityTF" />
+            <Label prefHeight="18.0" prefWidth="48.0" text="Улица" />
+            <TextField fx:id="streetTF" />
+            <Label prefHeight="18.0" prefWidth="48.0" text="Здание" />
+            <TextField fx:id="buildingTF" />
+            <Label prefHeight="18.0" prefWidth="80.0" text="Номер счета" />
+            <TextField fx:id="accnumTF" />
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onOk" prefHeight="30.0" prefWidth="100.0" text="Ок" />
+                  <Button mnemonicParsing="false" onAction="#onCancel" prefHeight="30.0" prefWidth="100.0" text="Отмена" />
+               </children>
+               <padding>
+                  <Insets left="550.0" />
+               </padding>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,57 @@
+CREATE TABLE "Clients" (
+"id" INTEGER NOT NULL UNIQUE,
+"surname" TEXT NOT NULL,
+"name" TEXT NOT NULL,
+"patronymic" TEXT NOT NULL,
+"phonenum" TEXT NOT NULL,
+"typeOfPerson" TEXT NOT NULL,
+"city" TEXT NOT NULL,
+"street" TEXT NOT NULL,
+"building" TEXT NOT NULL,
+"accountnum" TEXT NOT NULL,
+PRIMARY KEY("id" AUTOINCREMENT)
+);
+insert into Clients(surname,name,patronymic,phonenum,typeOfPerson,city,street,building,accountnum)
+values(?,?,?,?,?,?,?,?,?);
+update Clients set surname=?, name=?, patronymic=?, phonenum=?, typeOfPerson=?, city=?, street=?, building=?, accountnum=?
+where id=?
+//
+CREATE TABLE "Categories" (
+"id" INTEGER NOT NULL UNIQUE,
+"name" TEXT NOT NULL,
+"salary" REAL NOT NULL,
+PRIMARY KEY("id" AUTOINCREMENT)
+);
+insert into Categories(name,salary)
+values(?,?);
+update Categories set name=?, salary=?
+where id=?
+CREATE TABLE "Manager" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"surname"	TEXT,
+	"name"	TEXT NOT NULL,
+	"patronymic"	TEXT,
+	"education"	TEXT NOT NULL,
+	"categoryId"	INTEGER NOT NULL,
+	"dateOfStart"	TEXT NOT NULL,
+	"accountNumber"	TEXT NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT fk_category
+		FOREIGN KEY(categoryId)
+		REFERENCES Categories(id)
+);
+CREATE TABLE "Orders" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"clientId"	INTEGER NOT NULL,
+	"managerId"	INTEGER NOT NULL,
+	"dateOfSigning"	TEXT NOT NULL,
+	"dateOfComplete"	TEXT NOT NULL,
+	"price"	REAL NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	CONSTRAINT "fk_managers" FOREIGN KEY("managerId") REFERENCES "Managers"("id"),
+	CONSTRAINT "fk_client" FOREIGN KEY("clientId") REFERENCES "Clients"("id")
+);
+insert into Orders(clientId,managerId,dateOfSigning,dateOfComplete,price) values(?,?,?,?,?)
+update Orders set clientId=?,managerId=?,dateOfSigning=?,dateOfComplete=?,price=? where id=?
+delete from Orders where id=?
+
