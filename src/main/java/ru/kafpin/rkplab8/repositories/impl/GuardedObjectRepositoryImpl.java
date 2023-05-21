@@ -5,20 +5,23 @@ import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.Category;
-import ru.kafpin.rkplab8.repositories.inter.CategoryRepository;
+import ru.kafpin.rkplab8.models.GuardedObject;
+import ru.kafpin.rkplab8.models.Manager;
+import ru.kafpin.rkplab8.repositories.inter.GuardedObjectRepository;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-public class CategoryRepositoryImpl implements CategoryRepository {
-
-    private Alert alert =null;
-
+public class GuardedObjectRepositoryImpl  implements GuardedObjectRepository {
+    Alert alert =null;
     @Override
-    public Collection<Category> findAll() {
-        Collection<Category> categories = null;
+    public Collection<GuardedObject> findAll() {
+        Collection<GuardedObject> gObjects = null;
         Statement statement = null;
         try {
             statement = SQLHelper.connection.createStatement();
@@ -32,8 +35,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             Platform.exit();
         }
         try {
-            ResultSet resultSet = statement.executeQuery(SQLHelper.CATEGORY_SELECT_ALL);
-            categories = mapper(resultSet);
+            ResultSet resultSet = statement.executeQuery(SQLHelper.GUARDEDOBJECT_SELECT_ALL);
+            gObjects = mapper(resultSet);
         } catch (SQLException e) {
             alert= new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -43,32 +46,34 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             alert.showAndWait();
             Platform.exit();
         }
-        return categories;
+        return gObjects;
     }
-    
+
     @Override
-    public Optional<Category> findOneById(int id) {
+    public Optional<GuardedObject> findOneById(int id) {
         try {
-            PreparedStatement statement = SQLHelper.connection.prepareStatement(SQLHelper.CATEGORY_SELECT_ONE);
+            PreparedStatement statement = SQLHelper.connection.prepareStatement(SQLHelper.GUARDEDOBJECT_SELECT_ONE);
             statement.setInt(1,id);
             ResultSet rs=statement.executeQuery();
-            Category category =null;
+            GuardedObject gObject =null;
             while (rs.next()){
-                int cattid = rs.getInt("Id");
                 String name = rs.getString("name");
-                double salary = rs.getDouble("salary");
-                category = new Category(id,name,salary);
+                String image = rs.getString("image");
+                String city = rs.getString("city");
+                String street = rs.getString("street");
+                String building = rs.getString("building");
+                gObject = new GuardedObject(id,name,image,city,street,building);
             }
-            if (category!=null)
-                return Optional.of(category);
+            if (gObject!=null)
+                return Optional.of(gObject);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return Optional.empty();
     }
-    private PreparedStatement InsertOrUpdate(Category category) throws SQLException {
+    private PreparedStatement InsertOrUpdate(GuardedObject gObject) throws SQLException {
         PreparedStatement statement = null;
-        if (category == null) {
+        if (gObject == null) {
             alert= new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setTitle("Ошибка");
@@ -77,26 +82,32 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             alert.showAndWait();
         }
         else {
-            if (category.getId()==0){
-                statement =  SQLHelper.connection.prepareStatement(SQLHelper.CATEGORY_INSERT);
-                statement.setString(1, category.getName());
-                statement.setDouble(2,category.getSalary());
+            if (gObject.getId()==0){
+                statement =  SQLHelper.connection.prepareStatement(SQLHelper.GUARDEDOBJECT_INSERT);
+                statement.setString(1, gObject.getName());
+                statement.setString(2,gObject.getImage());
+                statement.setString(3,gObject.getCity());
+                statement.setString(4,gObject.getStreet());
+                statement.setString(5,gObject.getBuilding());
             }
             else {
-                statement = SQLHelper.connection.prepareStatement(SQLHelper.CATEGORY_UPDATE);
-                statement.setString(1, category.getName());
-                statement.setDouble(2, category.getSalary());
-                statement.setInt(3, category.getId());
+                statement = SQLHelper.connection.prepareStatement(SQLHelper.GUARDEDOBJECT_UPDATE);
+                statement.setString(1, gObject.getName());
+                statement.setString(2,gObject.getImage());
+                statement.setString(3,gObject.getCity());
+                statement.setString(4,gObject.getStreet());
+                statement.setString(5,gObject.getBuilding());
+                statement.setInt(6,gObject.getId());
             }
         }
         return statement;
     }
     @Override
-    public int save(Category category) {
+    public int save(GuardedObject gObject) {
         PreparedStatement statement = null;
         int rows=0;
         try {
-            statement = InsertOrUpdate(category);
+            statement = InsertOrUpdate(gObject);
             rows=statement.executeUpdate();
         } catch (SQLException e) {
             alert= new Alert(Alert.AlertType.ERROR);
@@ -111,25 +122,28 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public int delete(Category category) {
+    public int delete(GuardedObject gObject) {
         int rows=0;
         try {
-            PreparedStatement statement = SQLHelper.connection.prepareStatement(SQLHelper.CATEGORY_DELETE);
-            statement.setInt(1,category.getId());
+            PreparedStatement statement = SQLHelper.connection.prepareStatement(SQLHelper.GUARDEDOBJECT_DELETE);
+            statement.setInt(1,gObject.getId());
             rows=statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return rows;
     }
-    private Collection<Category> mapper(ResultSet resultSet) throws SQLException {
-        Collection<Category> categories = new ArrayList<>();
+    private Collection<GuardedObject> mapper(ResultSet resultSet) throws SQLException {
+        Collection<GuardedObject> gObjects = new ArrayList<>();
         while (resultSet.next()){
             int id = resultSet.getInt("Id");
             String name = resultSet.getString("name");
-            double salary = resultSet.getDouble("salary");
-            categories.add(new Category(id,name,salary));
+            String image = resultSet.getString("image");
+            String city = resultSet.getString("city");
+            String street = resultSet.getString("street");
+            String building = resultSet.getString("building");
+            gObjects.add(new GuardedObject(id,name,image,city,street,building));
         }
-        return categories;
+        return gObjects;
     }
 }

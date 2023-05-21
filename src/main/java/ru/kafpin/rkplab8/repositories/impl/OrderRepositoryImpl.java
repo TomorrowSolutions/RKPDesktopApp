@@ -19,14 +19,12 @@ import java.util.Optional;
 public class OrderRepositoryImpl implements OrderRepository {
     ClientRepositoryImpl clRep;
     ManagerRepositoryImpl manRep;
-    CategoryRepositoryImpl catRep;
 
     Alert alert;
 
     public OrderRepositoryImpl() {
         this.clRep = new ClientRepositoryImpl();
         this.manRep = new ManagerRepositoryImpl();
-        this.catRep = new CategoryRepositoryImpl();
         this.alert = null;
     }
 
@@ -46,7 +44,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             Platform.exit();
         }
         try {
-            ResultSet resultSet = statement.executeQuery(SQLHelper.MANAGER_SELECT_ALL);
+            ResultSet resultSet = statement.executeQuery(SQLHelper.ORDER_SELECT_ALL);
             orders = mapper(resultSet);
         } catch (SQLException e) {
             alert= new Alert(Alert.AlertType.ERROR);
@@ -63,7 +61,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public Optional<Order> findOneById(int id) {
         try {
-            PreparedStatement statement = SQLHelper.connection.prepareStatement(SQLHelper.MANAGER_SELECT_ONE);
+            PreparedStatement statement = SQLHelper.connection.prepareStatement(SQLHelper.ORDER_SELECT_ONE);
             statement.setInt(1,id);
             ResultSet rs=statement.executeQuery();
             Order order = null;
@@ -86,15 +84,67 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return Optional.empty();
     }
-
+    private PreparedStatement InsertOrUpdate(Order order) throws SQLException {
+        PreparedStatement pstm = null;
+        if (order == null) {
+            alert= new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("Ошибка создания сессии");
+            alert.setContentText("Переданный клиент является пустым");
+            alert.showAndWait();
+        }
+        else {
+            if (order.getId()==0){
+                pstm = SQLHelper.connection.prepareStatement(SQLHelper.ORDER_INSERT);
+                pstm.setInt(1, order.getClientId());
+                pstm.setInt(2, order.getManagerId());
+                pstm.setString(3,order.getDateOfSigning().toString());
+                pstm.setString(4,order.getDateOfComplete().toString());
+                pstm.setDouble(5,order.getPrice());
+            }
+            else {
+                pstm = SQLHelper.connection.prepareStatement(SQLHelper.ORDER_UPDATE);
+                pstm.setInt(1, order.getClientId());
+                pstm.setInt(2, order.getManagerId());
+                pstm.setString(3,order.getDateOfSigning().toString());
+                pstm.setString(4,order.getDateOfComplete().toString());
+                pstm.setDouble(5,order.getPrice());
+                pstm.setInt(6,order.getId());
+            }
+        }
+        return pstm;
+    }
     @Override
     public int save(Order order) {
-        return 0;
+        PreparedStatement statement = null;
+        int rows=0;
+        try {
+            statement = InsertOrUpdate(order);
+            rows=statement.executeUpdate();
+        } catch (SQLException e) {
+            alert= new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("Ошибка создания сессии");
+            alert.setContentText(e.getLocalizedMessage());
+            alert.showAndWait();
+            Platform.exit();
+        }
+        return rows;
     }
 
     @Override
     public int delete(Order order) {
-        return 0;
+        int rows = 0;
+        try {
+            PreparedStatement statement = SQLHelper.connection.prepareStatement(SQLHelper.ORDER_DELETE);
+            statement.setInt(1,order.getId());
+            rows=statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rows;
     }
     private Collection<Order> mapper(ResultSet resultSet) throws SQLException {
         Collection<Order> orders = new ArrayList<>();

@@ -3,17 +3,20 @@ package ru.kafpin.rkplab8.repositories.impl;
 import org.junit.jupiter.api.*;
 import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.Category;
+import ru.kafpin.rkplab8.models.GuardedObject;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CategoryRepositoryImplTest {
-    ArrayList<Category> categories=null;
-    CategoryRepositoryImpl catRep=null;
+class GuardedObjectRepositoryImplTest {
+    ArrayList<GuardedObject> gObjects = null;
+    GuardedObjectRepositoryImpl gObjRep = null;
     @BeforeAll
     void setUp() {
         try {
@@ -21,32 +24,31 @@ class CategoryRepositoryImplTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        catRep= new CategoryRepositoryImpl();
+        gObjRep=new GuardedObjectRepositoryImpl();
     }
     @BeforeEach
     void fill() {
         Statement stm= null;
         try {
             stm = SQLHelper.connection.createStatement();
-            stm.execute(SQLHelper.CATEGORIES);
+            stm.execute(SQLHelper.GUARDEDOBJECTS);
         } catch (SQLException e) {
             System.out.println(e.getLocalizedMessage());
         }
-        categories=new ArrayList<>();
-        categories.add(new Category("Младший менеджер",25000));
-        categories.add(new Category("Старший менеджер",50000));
-        categories.add(new Category("Топ менеджер",75000));
-        for (Category c : categories){
-            catRep.save(c);
+        gObjects=new ArrayList<>();
+        gObjects.add(new GuardedObject("Склад","example","Москва","Прачечная","123"));
+        gObjects.add(new GuardedObject("Офис","example","Мурм","Московская","123"));
+        gObjects.add(new GuardedObject("Завод","example","Орел","Первомайская","123"));
+        for (GuardedObject g : gObjects){
+            gObjRep.save(g);
         }
-        categories = new ArrayList<>(catRep.findAll());
+        gObjects = new ArrayList<>(gObjRep.findAll());
     }
-
     @AfterEach
     void cleaning() {
         try {
             Statement statement = SQLHelper.connection.createStatement();
-            String sql = "DROP TABLE Categories";
+            String sql = "DROP TABLE GuardedObjects";
             statement.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getLocalizedMessage());
@@ -62,37 +64,36 @@ class CategoryRepositoryImplTest {
         File file = new File("SecurityTest.db");
         file.delete();
     }
-
     @Test
     void findAll() {
-        Collection<Category> actual = catRep.findAll();
-        assertEquals(categories,actual);
+        Collection<GuardedObject> actual =gObjRep.findAll();
+        assertEquals(gObjects,actual);
     }
 
     @Test
     void findOneById() {
-        var finded = catRep.findOneById(1);
-        Category category= null;
+        var finded = gObjRep.findOneById(gObjects.get(0).getId());
+        GuardedObject actual = null;
         if (!finded.isEmpty())
-            category=finded.stream().findFirst().orElse(null);
-        assertEquals(categories.get(0),category);
+            actual=finded.stream().findFirst().orElse(null);
+        assertEquals(gObjects.get(0),actual);
     }
 
     @Test
     void insert() {
-        int actual =catRep.save(new Category("Менеджер по продажам",35000));
+        int actual  = gObjRep.save(new GuardedObject("Магазин","example","Майкоп","Тестовая","123"));
         assertEquals(1,actual);
+
     }
     @Test
     void update() {
-        categories.get(0).setName("тест");
-        int actual =catRep.save(categories.get(0));
+        gObjects.get(0).setName("Изменено");
+        int actual  = gObjRep.save(gObjects.get(0));
         assertEquals(1,actual);
     }
-
     @Test
     void delete() {
-        int actual = catRep.delete(categories.get(0));
+        int actual = gObjRep.delete(gObjects.get(0));
         assertEquals(1,actual);
     }
 }

@@ -55,3 +55,39 @@ insert into Orders(clientId,managerId,dateOfSigning,dateOfComplete,price) values
 update Orders set clientId=?,managerId=?,dateOfSigning=?,dateOfComplete=?,price=? where id=?
 delete from Orders where id=?
 
+CREATE TABLE "GuardedObjects" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"name"	TEXT NOT NULL,
+	"image"	TEXT NOT NULL,
+	"city"	TEXT NOT NULL,
+	"street"	TEXT NOT NULL,
+	"building"	TEXT NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+insert into GuardedObjects(name,image,city,street,building) values(?,?,?,?,?)
+update GuardedObjects set name=?, image=?, city=?, street=?, building=? where id=?
+delete from GuardedObjects where id=?
+
+CREATE TABLE "Services" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"name"	TEXT NOT NULL,
+	"price"	REAL NOT NULL,
+	"periodOfExecution"	INTEGER NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+insert into Services (name,price,periodOfExecution) values(?,?,?)
+update Services set name=?,price=?,periodOfExecution=? where id=?
+
+CREATE TABLE "OrderDetails" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"orderId"	INTEGER NOT NULL,
+	"objectId"	INTEGER NOT NULL,
+	"serviceId"	INTEGER NOT NULL,
+	"quantity"	INTEGER NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "fk_orders" FOREIGN KEY("orderId") REFERENCES "Orders"("id"),
+	CONSTRAINT "fk_object" FOREIGN KEY("objectId") REFERENCES "GuardedObjects"("id"),
+	CONSTRAINT "fk_service" FOREIGN KEY("serviceId") REFERENCES "Services"("id")
+);
+insert into OrderDetails(orderId,objectId,serviceId,quantity) values (?,?,?,?)
+update OrderDetails set orderId=?,objectId=?,serviceId=?,quantity=? where id=?

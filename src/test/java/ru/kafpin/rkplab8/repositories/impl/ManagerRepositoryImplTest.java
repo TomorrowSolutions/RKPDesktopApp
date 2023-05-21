@@ -40,33 +40,24 @@ class ManagerRepositoryImplTest {
             stm.execute(SQLHelper.CATEGORIES);
             stm.execute(SQLHelper.MANAGERS);
             cats = new ArrayList<>();
-            cats.add(new Category(1,"Младший менеджер",25000));
-            cats.add(new Category(2,"Старший менеджер",50000));
-            cats.add(new Category(3,"Топ менеджер",75000));
+            cats.add(new Category("Младший менеджер",25000));
+            cats.add(new Category("Старший менеджер",50000));
+            cats.add(new Category("Топ менеджер",75000));
             for(var c : cats){
-                PreparedStatement pstm = SQLHelper.connection.prepareStatement(SQLHelper.CATEGORY_INSERT);
-                pstm.setString(1,c.getName());
-                pstm.setDouble(2,c.getSalary());
-                pstm.executeUpdate();
+                catRep.save(c);
             }
+            cats = new ArrayList<>(catRep.findAll()) ;
             mans = new ArrayList<>();
-            mans.add(new Manager(1,"Голяков","Иван","Аркадьевич","Среднее",
-                    cats.get(0),1, LocalDate.now(),"867166870158024500000"));
-            mans.add(new Manager(2,"Кобзева","Алиса","Сергеевна","Среднее",
-                    cats.get(1),2, LocalDate.now(),"867166870158024500000"));
-            mans.add(new Manager(3,"Миронов","Иван","Львович","Среднее",
-                    cats.get(2),3, LocalDate.now(),"867166870158024500000"));
+            mans.add(new Manager("Голяков","Иван","Аркадьевич","Среднее",
+                    cats.get(0),cats.get(0).getId(), LocalDate.now(),"867166870158024500000"));
+            mans.add(new Manager("Кобзева","Алиса","Сергеевна","Среднее",
+                    cats.get(1),cats.get(1).getId(), LocalDate.now(),"867166870158024500000"));
+            mans.add(new Manager("Миронов","Иван","Львович","Среднее",
+                    cats.get(2),cats.get(2).getId(), LocalDate.now(),"867166870158024500000"));
             for (var m : mans){
-                PreparedStatement pstm = SQLHelper.connection.prepareStatement(SQLHelper.MANAGER_INSERT);
-                pstm.setString(1,m.getSurname());
-                pstm.setString(2,m.getName());
-                pstm.setString(3,m.getPatronymic());
-                pstm.setString(4,m.getEducation());
-                pstm.setInt(5,m.getCategoryId());
-                pstm.setString(6,m.getDateOfStart().toString());
-                pstm.setString(7,m.getAccountNumber());
-                pstm.executeUpdate();
+                manRep.save(m);
             }
+            mans = new ArrayList<>(manRep.findAll());
         } catch (SQLException e) {
             System.out.println(e.getLocalizedMessage());
         }
@@ -112,7 +103,7 @@ class ManagerRepositoryImplTest {
     @Test
     void insert() {
         int rows = manRep.save(new Manager("Полушев","Иван","Максимович","Среднее",
-                cats.get(0),1, LocalDate.now(),"867166870158024500000"));
+                cats.get(0),cats.get(0).getId(), LocalDate.now(),"867166870158024500000"));
         assertEquals(1,rows);
     }
     @Test

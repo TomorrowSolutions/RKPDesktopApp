@@ -50,15 +50,42 @@ public class SQLHelper {
             "\tCONSTRAINT \"fk_managers\" FOREIGN KEY(\"managerId\") REFERENCES \"Managers\"(\"id\"),\n" +
             "\tCONSTRAINT \"fk_client\" FOREIGN KEY(\"clientId\") REFERENCES \"Clients\"(\"id\")\n" +
             ");";
+    public static final String GUARDEDOBJECTS = "CREATE TABLE \"GuardedObjects\" (\n" +
+            "\t\"id\"\tINTEGER NOT NULL UNIQUE,\n" +
+            "\t\"name\"\tTEXT NOT NULL,\n" +
+            "\t\"image\"\tTEXT NOT NULL,\n" +
+            "\t\"city\"\tTEXT NOT NULL,\n" +
+            "\t\"street\"\tTEXT NOT NULL,\n" +
+            "\t\"building\"\tTEXT NOT NULL,\n" +
+            "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
+            ");";
+    public static final String SERVICES = "CREATE TABLE \"Services\" (\n" +
+            "\t\"id\"\tINTEGER NOT NULL UNIQUE,\n" +
+            "\t\"name\"\tTEXT NOT NULL,\n" +
+            "\t\"price\"\tREAL NOT NULL,\n" +
+            "\t\"periodOfExecution\"\tINTEGER NOT NULL,\n" +
+            "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
+            ");";
+    public static final String ORDERDETAILS = "CREATE TABLE \"OrderDetails\" (\n" +
+            "\t\"id\"\tINTEGER NOT NULL UNIQUE,\n" +
+            "\t\"orderId\"\tINTEGER NOT NULL,\n" +
+            "\t\"objectId\"\tINTEGER NOT NULL,\n" +
+            "\t\"serviceId\"\tINTEGER NOT NULL,\n" +
+            "\t\"quantity\"\tINTEGER NOT NULL,\n" +
+            "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
+            "\tCONSTRAINT \"fk_orders\" FOREIGN KEY(\"orderId\") REFERENCES \"Orders\"(\"id\"),\n" +
+            "\tCONSTRAINT \"fk_object\" FOREIGN KEY(\"objectId\") REFERENCES \"GuardedObjects\"(\"id\"),\n" +
+            "\tCONSTRAINT \"fk_service\" FOREIGN KEY(\"serviceId\") REFERENCES \"Services\"(\"id\")\n" +
+            ");";
     //endregion
 
     //region Клиенты
-    public final static String CLIENT_SELECT_ALL="SELECT * FROM clients";
-    public final static String CLIENT_SELECT_ONE="SELECT * FROM clients where id=?";
+    public final static String CLIENT_SELECT_ALL="SELECT * FROM Clients";
+    public final static String CLIENT_SELECT_ONE="SELECT * FROM Clients where id=?";
     public final static String CLIENT_INSERT="INSERT INTO Clients (surname,name,patronymic,phonenum,typeOfPerson,city,street,building,accountnum)" +
             "values(?,?,?,?,?,?,?,?,?);";
-    public final static String CLIENT_UPDATE="update Clients surname=?,name=?,patronymic=?,phonenum=?,typeOfPerson=?,city=?," +
-            "street=?,building=?,accountnum=? where id=?";
+    public final static String CLIENT_UPDATE="update Clients set surname=?,name=?,patronymic=?,phonenum=?,typeOfPerson=?,city=?," +
+            " street=?,building=?,accountnum=? where id=?";
     public final static String CLIENT_DELETE="delete from Clients where id=?";
     //endregion
 
@@ -81,12 +108,34 @@ public class SQLHelper {
     //endregion
 
     //region Заказы
-    public final static String ORDERS_SELECT_ALL="SELECT * FROM Orders";
-    public final static String ORDERS_SELECT_ONE="SELECT * FROM Orders where id=?";
-    public final static String ORDERS_INSERT="insert into Orders(clientId,managerId,dateOfSigning,dateOfComplete,price) " +
+    public final static String ORDER_SELECT_ALL="SELECT * FROM Orders";
+    public final static String ORDER_SELECT_ONE="SELECT * FROM Orders where id=?";
+    public final static String ORDER_INSERT="insert into Orders(clientId,managerId,dateOfSigning,dateOfComplete,price) " +
             "values(?,?,?,?,?)";
-    public final static String ORDERS_UPDATE="update Orders set clientId=?,managerId=?,dateOfSigning=?,dateOfComplete=?,price=? where id=?";
-    public final static String ORDERS_DELETE="delete from Orders where id=?";
+    public final static String ORDER_UPDATE="update Orders set clientId=?,managerId=?,dateOfSigning=?,dateOfComplete=?,price=? where id=?";
+    public final static String ORDER_DELETE="delete from Orders where id=?";
     //endregion
+
+    //region Охраняемые объекты
+    public final static String GUARDEDOBJECT_SELECT_ALL="SELECT * FROM GuardedObjects";
+    public final static String GUARDEDOBJECT_SELECT_ONE="SELECT * FROM GuardedObjects where id=?";
+    public final static String GUARDEDOBJECT_INSERT="insert into GuardedObjects(name,image,city,street,building) values(?,?,?,?,?)";
+    public final static String GUARDEDOBJECT_UPDATE="update GuardedObjects set name=?, image=?, city=?, street=?, building=? where id=?";
+    public final static String GUARDEDOBJECT_DELETE="delete from GuardedObjects where id=?";
+    //endregion
+
+    //region Услуги
+    public final static String SERVICE_SELECT_ALL="SELECT * FROM Services";
+    public final static String SERVICE_SELECT_ONE="SELECT * FROM  Services where id=?";
+    public final static String SERVICE_INSERT="insert into Services (name,price,periodOfExecution) values(?,?,?)";
+    public final static String SERVICE_UPDATE="update Services set name=?,price=?,periodOfExecution=? where id=?";
+    public final static String SERVICE_DELETE="delete from Services where id=?";
+    //endregion
+
+    public final static String ORDERDETAIL_SELECT_ALL="SELECT * FROM OrderDetails";
+    public final static String ORDERDETAIL_SELECT_ONE="SELECT * FROM  OrderDetails where id=?";
+    public final static String ORDERDETAIL_INSERT="insert into OrderDetails(orderId,objectId,serviceId,quantity) values (?,?,?,?)";
+    public final static String ORDERDETAIL_UPDATE="update OrderDetails set orderId=?,objectId=?,serviceId=?,quantity=? where id=?";
+    public final static String ORDERDETAIL_DELETE="delete from OrderDetails where id=?";
 
 }
