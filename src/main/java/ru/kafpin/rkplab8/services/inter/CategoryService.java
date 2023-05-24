@@ -10,5 +10,5 @@ public interface CategoryService {
     Category findOneById(int id);
     int create(Category category);
     int update(Category category);
-    int delete(int id);
+    int delete(Category category);
 }

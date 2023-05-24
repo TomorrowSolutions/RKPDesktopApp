@@ -3,7 +3,7 @@ package ru.kafpin.rkplab8;
 import java.sql.Connection;
 
 public class SQLHelper {
-    public final static String DB_URL="jdbc:sqlite:SecurityTest.db";
+    public final static String DB_URL="jdbc:sqlite:SecurityLite.db";
     public static Connection connection=null;
     //region Создание таблиц
     public final static String MANAGERS="CREATE TABLE \"Managers\" (\n" +
@@ -132,10 +132,12 @@ public class SQLHelper {
     public final static String SERVICE_DELETE="delete from Services where id=?";
     //endregion
 
+    //region Подробности заказов
     public final static String ORDERDETAIL_SELECT_ALL="SELECT * FROM OrderDetails";
     public final static String ORDERDETAIL_SELECT_ONE="SELECT * FROM  OrderDetails where id=?";
     public final static String ORDERDETAIL_INSERT="insert into OrderDetails(orderId,objectId,serviceId,quantity) values (?,?,?,?)";
     public final static String ORDERDETAIL_UPDATE="update OrderDetails set orderId=?,objectId=?,serviceId=?,quantity=? where id=?";
     public final static String ORDERDETAIL_DELETE="delete from OrderDetails where id=?";
+    //endregion
 
 }

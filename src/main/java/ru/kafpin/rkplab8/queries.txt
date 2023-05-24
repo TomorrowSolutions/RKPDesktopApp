@@ -26,7 +26,7 @@ insert into Categories(name,salary)
 values(?,?);
 update Categories set name=?, salary=?
 where id=?
-CREATE TABLE "Manager" (
+CREATE TABLE "Managers" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"surname"	TEXT,
 	"name"	TEXT NOT NULL,

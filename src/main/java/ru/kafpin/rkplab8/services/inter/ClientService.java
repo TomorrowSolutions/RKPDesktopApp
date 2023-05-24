@@ -10,5 +10,5 @@ public interface ClientService {
     Client findOneById(int id);
     int create(Client client);
     int update(Client client);
-    int delete(int id);
+    int delete(Client clientS);
 }
