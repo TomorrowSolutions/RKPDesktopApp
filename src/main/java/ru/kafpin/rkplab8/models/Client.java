@@ -58,4 +58,8 @@ public class Client {
     public Client() {
         this(0,"","","","",null,"","","","");
     }
+
+    public String getFIO(){
+        return surname+" "+name+" "+patronymic;
+    }
 }

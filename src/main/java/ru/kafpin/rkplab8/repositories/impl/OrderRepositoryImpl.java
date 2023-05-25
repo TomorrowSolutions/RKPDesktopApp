@@ -151,10 +151,10 @@ public class OrderRepositoryImpl implements OrderRepository {
         while (resultSet.next()){
             int id = resultSet.getInt("Id");
             int clientId = resultSet.getInt("clientId");
-            var cl = clRep.findOneById(id);
+            var cl = clRep.findOneById(clientId);
             Client client = cl.isEmpty() ? null : cl.stream().findFirst().orElse(null);
             int managerId = resultSet.getInt("managerId");
-            var mn = manRep.findOneById(id);
+            var mn = manRep.findOneById(managerId);
             Manager manager= mn.isEmpty() ? null : mn.stream().findFirst().orElse(null);
             LocalDate dateOfSigning = LocalDate.parse(resultSet.getString("dateOfSigning"));
             LocalDate dateOfComplete = LocalDate.parse(resultSet.getString("dateOfSigning"));

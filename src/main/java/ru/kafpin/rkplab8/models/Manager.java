@@ -42,4 +42,8 @@ public class Manager {
     public Manager() {
         this(0,null,null,null,null,null,0,null,null);
     }
+
+    public String getFIO(){
+       return surname+" "+name+" "+patronymic;
+    }
 }

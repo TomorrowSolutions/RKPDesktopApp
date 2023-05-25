@@ -161,7 +161,7 @@ public class ManagerRepositoryImpl implements ManagerRepository {
             String patronymic = resultSet.getString("patronymic");
             String education = resultSet.getString("education");
             int categoryId = resultSet.getInt("categoryId");
-            var cat = catRep.findOneById(id);
+            var cat = catRep.findOneById(categoryId);
             Category category = cat.isEmpty() ? null : cat.stream().findFirst().orElse(null);
             LocalDate dateOfStart = LocalDate.parse(resultSet.getString("dateOfStart"));
             String accountNumber = resultSet.getString("accountNumber");

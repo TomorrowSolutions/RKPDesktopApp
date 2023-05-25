@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="426.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane prefHeight="426.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kafpin.rkplab8.controllers.NewOrderController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" prefHeight="440.4" prefWidth="610.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Менеджер" />
-            <ComboBox fx:id="managerCB" prefHeight="26.0" prefWidth="395.0" />
+            <ComboBox fx:id="managerCombo" prefHeight="26.0" prefWidth="395.0" />
             <Label text="Клиент" />
-            <ComboBox fx:id="clientCB" prefHeight="26.0" prefWidth="398.0" />
+            <ComboBox fx:id="clientCombo" prefHeight="26.0" prefWidth="398.0" />
             <Label text="Дата подписания" />
             <DatePicker fx:id="signingDP" prefWidth="164.0" />
             <Label prefHeight="18.0" prefWidth="106.0" text="Дата выполнения" />
