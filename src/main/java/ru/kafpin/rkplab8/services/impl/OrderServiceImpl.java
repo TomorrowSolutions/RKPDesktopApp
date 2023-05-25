@@ -37,10 +37,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int delete(int id) {
-        var finded = ordRep.findOneById(id);
-        if(finded.isEmpty())
-            return 0;
-        return ordRep.delete(finded.stream().findFirst().orElse(null));
+    public int delete(Order order) {
+        return ordRep.delete(order);
+
     }
 }

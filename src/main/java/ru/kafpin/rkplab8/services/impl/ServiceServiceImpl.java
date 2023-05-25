@@ -37,10 +37,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public int delete(int id) {
-        var finded = servRep.findOneById(id);
-        if(finded.isEmpty())
-            return 0;
-        return servRep.delete(finded.stream().findFirst().orElse(null));
+    public int delete(Service service) {
+        return servRep.delete(service);
     }
 }

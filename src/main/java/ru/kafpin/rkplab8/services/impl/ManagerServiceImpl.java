@@ -37,10 +37,7 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public int delete(int id) {
-        var finded = manRep.findOneById(id);
-        if(finded.isEmpty())
-            return 0;
-        return manRep.delete(finded.stream().findFirst().orElse(null));
+    public int delete(Manager manager) {
+        return manRep.delete(manager);
     }
 }

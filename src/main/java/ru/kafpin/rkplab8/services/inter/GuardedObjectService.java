@@ -10,5 +10,5 @@ public interface GuardedObjectService {
     GuardedObject findOneById(int id);
     int create(GuardedObject guardedObject);
     int update(GuardedObject guardedObject);
-    int delete(int id);
+    int delete(GuardedObject guardedObject);
 }

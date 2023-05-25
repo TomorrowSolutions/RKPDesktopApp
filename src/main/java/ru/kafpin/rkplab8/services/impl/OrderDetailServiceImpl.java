@@ -40,10 +40,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
-    public int delete(int id) {
-        var finded = ordDetRep.findOneById(id);
-        if(finded.isEmpty())
-            return 0;
-        return ordDetRep.delete(finded.stream().findFirst().orElse(null));
+    public int delete(OrderDetail orderDetail) {
+        return ordDetRep.delete(orderDetail);
     }
 }

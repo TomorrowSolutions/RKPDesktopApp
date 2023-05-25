@@ -10,4 +10,4 @@ public interface OrderService {
     Order findOneById(int id);
     int create(Order order);
     int update(Order order);
-    int delete(int id);}
+    int delete(Order order);}

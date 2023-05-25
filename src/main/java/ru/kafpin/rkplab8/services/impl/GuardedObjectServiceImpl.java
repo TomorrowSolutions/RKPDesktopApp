@@ -38,10 +38,7 @@ public class GuardedObjectServiceImpl implements GuardedObjectService {
     }
 
     @Override
-    public int delete(int id) {
-        var finded = objRep.findOneById(id);
-        if(finded.isEmpty())
-            return 0;
-        return objRep.delete(finded.stream().findFirst().orElse(null));
+    public int delete(GuardedObject guardedObject) {
+       return  objRep.delete(guardedObject);
     }
 }

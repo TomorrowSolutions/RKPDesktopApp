@@ -10,5 +10,5 @@ public interface ServiceService {
     Service findOneById(int id);
     int create(Service service);
     int update(Service service);
-    int delete(int id);
+    int delete(Service service);
 }

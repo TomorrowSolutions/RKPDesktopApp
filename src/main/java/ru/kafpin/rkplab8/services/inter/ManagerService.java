@@ -9,5 +9,5 @@ public interface ManagerService {
     Manager findOneById(int id);
     int create(Manager manager);
     int update(Manager manager);
-    int delete(int id);
+    int delete(Manager manager);
 }

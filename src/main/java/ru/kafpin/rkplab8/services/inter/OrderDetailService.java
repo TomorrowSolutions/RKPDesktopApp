@@ -10,5 +10,5 @@ public interface OrderDetailService {
     OrderDetail findOneById(int id);
     int create(OrderDetail orderDetail);
     int update(OrderDetail orderDetail);
-    int delete(int id);
+    int delete(OrderDetail orderDetail);
 }
