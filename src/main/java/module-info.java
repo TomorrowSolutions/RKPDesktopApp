@@ -4,6 +4,8 @@ module ru.kafpin.rkplab8 {
     requires lombok;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires org.apache.commons.io;
+    requires java.desktop;
 
 
     opens ru.kafpin.rkplab8 to javafx.fxml;

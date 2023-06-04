@@ -87,8 +87,8 @@ public class ClientRepositoryImpl implements ClientRepository {
         else {
             if (client.getId()==0){
                 statement = SQLHelper.connection.prepareStatement(SQLHelper.CLIENT_INSERT);
-                statement.setString(1, client.getName());
-                statement.setString(2, client.getSurname());
+                statement.setString(1, client.getSurname());
+                statement.setString(2, client.getName());
                 statement.setString(3, client.getPatronymic());
                 statement.setString(4, client.getPhoneNum());
                 statement.setString(5, client.getTypeOfPerson().toString());

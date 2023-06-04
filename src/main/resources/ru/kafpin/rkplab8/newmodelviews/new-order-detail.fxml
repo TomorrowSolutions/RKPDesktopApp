@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="352.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane prefHeight="352.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kafpin.rkplab8.controllers.NewOrderDetailController">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" prefHeight="416.0" prefWidth="800.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Договор" />
-            <ComboBox fx:id="orderCB" prefHeight="26.0" prefWidth="395.0" />
+            <ComboBox fx:id="orderCombo" prefHeight="26.0" prefWidth="395.0" />
             <Label text="Услуга" />
-            <ComboBox fx:id="serviceCB" prefHeight="26.0" prefWidth="398.0" />
+            <ComboBox fx:id="serviceCombo" prefHeight="26.0" prefWidth="398.0" />
             <Label text="Объект" />
-            <ComboBox fx:id="objectCB" prefHeight="26.0" prefWidth="398.0" />
+            <ComboBox fx:id="objectCombo" prefHeight="26.0" prefWidth="398.0" />
             <Label prefHeight="18.0" prefWidth="74.0" text="Количество" />
-            <TextField fx:id="numOfServTF" />
+            <TextField fx:id="quantityTF" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#onOk" prefHeight="30.0" prefWidth="100.0" text="Ок" />

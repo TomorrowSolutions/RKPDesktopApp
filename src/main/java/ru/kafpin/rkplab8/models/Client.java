@@ -60,6 +60,6 @@ public class Client {
     }
 
     public String getFIO(){
-        return surname+" "+name+" "+patronymic;
+        return String.join(" ",surname,name,patronymic);
     }
 }
