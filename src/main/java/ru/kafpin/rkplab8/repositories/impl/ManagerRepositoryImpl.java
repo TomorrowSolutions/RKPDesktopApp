@@ -6,8 +6,7 @@ import javafx.stage.Modality;
 import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.Category;
 import ru.kafpin.rkplab8.models.Manager;
-import ru.kafpin.rkplab8.models.Manager;
-import ru.kafpin.rkplab8.models.TypeOfPerson;
+import ru.kafpin.rkplab8.repositories.inter.ClientRepository;
 import ru.kafpin.rkplab8.repositories.inter.ManagerRepository;
 
 import java.sql.PreparedStatement;
@@ -18,16 +17,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
+/**
+ * Реализация {@link ManagerRepository}
+ * */
 public class ManagerRepositoryImpl implements ManagerRepository {
+    /**
+     * Объект {@link CategoryRepositoryImpl} для внешнего ключа
+     * */
     CategoryRepositoryImpl catRep;
     private Alert alert;
+    /**
+     * Конструктор для заполнения объекта {@link CategoryRepositoryImpl}
+     * */
     public ManagerRepositoryImpl() {
         this.catRep = new CategoryRepositoryImpl();
         this.alert = null;
     }
 
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Collection<Manager> findAll() {
         Collection<Manager> managers = null;
@@ -57,7 +66,9 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         }
         return managers;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Optional<Manager> findOneById(int id) {
         try {
@@ -84,7 +95,11 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         }
         return Optional.empty();
     }
-
+    /**
+     * Метод для определения новая запись или уже существующая
+     * @param manager передаваемая запись
+     * @return {@link PreparedStatement} с соответствующей командой
+     * */
     private PreparedStatement InsertOrUpdate(Manager manager) throws SQLException {
         PreparedStatement pstm = null;
         if (manager == null) {
@@ -120,7 +135,9 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         }
         return pstm;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int save(Manager manager) {
         PreparedStatement statement = null;
@@ -139,7 +156,9 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         }
         return rows;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int delete(Manager manager) {
         int rows=0;
@@ -152,6 +171,10 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         }
         return rows;
     }
+    /** Функция для создания коллекции всех записей
+     * @param resultSet данные полученные из базы данных
+     * @return {@link Collection} со всеми записями
+     * */
     private Collection<Manager> mapper(ResultSet resultSet) throws SQLException {
         Collection<Manager> managers = new ArrayList<>();
         while (resultSet.next()){

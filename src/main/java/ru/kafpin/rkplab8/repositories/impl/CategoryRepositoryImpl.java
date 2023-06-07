@@ -11,11 +11,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
+/**
+ * Реализация {@link CategoryRepository}
+ * */
 public class CategoryRepositoryImpl implements CategoryRepository {
-
     private Alert alert =null;
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Collection<Category> findAll() {
         Collection<Category> categories = null;
@@ -45,7 +48,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
         return categories;
     }
-    
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Optional<Category> findOneById(int id) {
         try {
@@ -66,6 +71,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
         return Optional.empty();
     }
+    /**
+     * Метод для определения новая запись или уже существующая
+     * @param category передаваемая запись
+     * @return {@link PreparedStatement} с соответствующей командой
+     * */
     private PreparedStatement InsertOrUpdate(Category category) throws SQLException {
         PreparedStatement statement = null;
         if (category == null) {
@@ -91,6 +101,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
         return statement;
     }
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int save(Category category) {
         PreparedStatement statement = null;
@@ -109,7 +122,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
         return rows;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int delete(Category category) {
         int rows=0;
@@ -122,6 +137,10 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
         return rows;
     }
+    /** Функция для создания коллекции всех записей
+     * @param resultSet данные полученные из базы данных
+     * @return {@link Collection} со всеми записями
+     * */
     private Collection<Category> mapper(ResultSet resultSet) throws SQLException {
         Collection<Category> categories = new ArrayList<>();
         while (resultSet.next()){

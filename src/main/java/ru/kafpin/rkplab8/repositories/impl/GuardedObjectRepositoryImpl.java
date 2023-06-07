@@ -7,6 +7,7 @@ import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.Category;
 import ru.kafpin.rkplab8.models.GuardedObject;
 import ru.kafpin.rkplab8.models.Manager;
+import ru.kafpin.rkplab8.repositories.inter.CategoryRepository;
 import ru.kafpin.rkplab8.repositories.inter.GuardedObjectRepository;
 
 import java.sql.PreparedStatement;
@@ -16,9 +17,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
+/**
+ * Реализация {@link GuardedObjectRepository}
+ * */
 public class GuardedObjectRepositoryImpl  implements GuardedObjectRepository {
     Alert alert =null;
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Collection<GuardedObject> findAll() {
         Collection<GuardedObject> gObjects = null;
@@ -48,7 +54,9 @@ public class GuardedObjectRepositoryImpl  implements GuardedObjectRepository {
         }
         return gObjects;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Optional<GuardedObject> findOneById(int id) {
         try {
@@ -71,6 +79,11 @@ public class GuardedObjectRepositoryImpl  implements GuardedObjectRepository {
         }
         return Optional.empty();
     }
+    /**
+     * Метод для определения новая запись или уже существующая
+     * @param gObject передаваемая запись
+     * @return {@link PreparedStatement} с соответствующей командой
+     * */
     private PreparedStatement InsertOrUpdate(GuardedObject gObject) throws SQLException {
         PreparedStatement statement = null;
         if (gObject == null) {
@@ -102,6 +115,9 @@ public class GuardedObjectRepositoryImpl  implements GuardedObjectRepository {
         }
         return statement;
     }
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int save(GuardedObject gObject) {
         PreparedStatement statement = null;
@@ -120,7 +136,9 @@ public class GuardedObjectRepositoryImpl  implements GuardedObjectRepository {
         }
         return rows;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int delete(GuardedObject gObject) {
         int rows=0;
@@ -133,6 +151,10 @@ public class GuardedObjectRepositoryImpl  implements GuardedObjectRepository {
         }
         return rows;
     }
+    /** Функция для создания коллекции всех записей
+     * @param resultSet данные полученные из базы данных
+     * @return {@link Collection} со всеми записями
+     * */
     private Collection<GuardedObject> mapper(ResultSet resultSet) throws SQLException {
         Collection<GuardedObject> gObjects = new ArrayList<>();
         while (resultSet.next()){

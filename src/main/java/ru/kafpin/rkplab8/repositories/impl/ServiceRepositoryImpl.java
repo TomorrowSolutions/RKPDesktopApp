@@ -7,6 +7,7 @@ import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.GuardedObject;
 import ru.kafpin.rkplab8.models.Service;
 import ru.kafpin.rkplab8.models.Service;
+import ru.kafpin.rkplab8.repositories.inter.OrderDetailRepository;
 import ru.kafpin.rkplab8.repositories.inter.ServiceRepository;
 
 import java.sql.PreparedStatement;
@@ -16,9 +17,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
+/**
+ * Реализация {@link ServiceRepository}
+ * */
 public class ServiceRepositoryImpl implements ServiceRepository {
     Alert alert=null;
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Collection<Service> findAll() {
         Collection<Service> services = null;
@@ -48,7 +54,9 @@ public class ServiceRepositoryImpl implements ServiceRepository {
         }
         return services;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Optional<Service> findOneById(int id) {
         try {
@@ -69,6 +77,11 @@ public class ServiceRepositoryImpl implements ServiceRepository {
         }
         return Optional.empty();
     }
+    /**
+     * Метод для определения новая запись или уже существующая
+     * @param service передаваемая запись
+     * @return {@link PreparedStatement} с соответствующей командой
+     * */
     private PreparedStatement InsertOrUpdate(Service service) throws SQLException {
         PreparedStatement statement = null;
         if (service == null) {
@@ -96,6 +109,9 @@ public class ServiceRepositoryImpl implements ServiceRepository {
         }
         return statement;
     }
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int save(Service service) {
         PreparedStatement statement = null;
@@ -114,7 +130,9 @@ public class ServiceRepositoryImpl implements ServiceRepository {
         }
         return rows;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int delete(Service service) {
         int rows=0;
@@ -127,6 +145,10 @@ public class ServiceRepositoryImpl implements ServiceRepository {
         }
         return rows;
     }
+    /** Функция для создания коллекции всех записей
+     * @param resultSet данные полученные из базы данных
+     * @return {@link Collection} со всеми записями
+     * */
     private Collection<Service> mapper(ResultSet resultSet) throws SQLException {
         Collection<Service> services = new ArrayList<>();
         while (resultSet.next()){

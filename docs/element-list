@@ -1,0 +1,8 @@
+module:ru.kafpin.rkplab8
+ru.kafpin.rkplab8
+ru.kafpin.rkplab8.controllers
+ru.kafpin.rkplab8.models
+ru.kafpin.rkplab8.repositories.impl
+ru.kafpin.rkplab8.repositories.inter
+ru.kafpin.rkplab8.services.impl
+ru.kafpin.rkplab8.services.inter

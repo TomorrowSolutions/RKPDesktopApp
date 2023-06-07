@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.*;
+import ru.kafpin.rkplab8.repositories.inter.ManagerRepository;
 import ru.kafpin.rkplab8.repositories.inter.OrderDetailRepository;
 
 import java.sql.PreparedStatement;
@@ -15,22 +16,36 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
+/**
+ * Реализация {@link OrderDetailRepository}
+ * */
 public class OrderDetailRepositoryImpl implements OrderDetailRepository {
-
+    /**
+     * Объект {@link OrderRepositoryImpl} для внешнего ключа
+     * */
     OrderRepositoryImpl ordRep;
+    /**
+     * Объект {@link GuardedObjectRepositoryImpl} для внешнего ключа
+     * */
     GuardedObjectRepositoryImpl objRep;
+    /**
+     * Объект {@link ServiceRepositoryImpl} для внешнего ключа
+     * */
     ServiceRepositoryImpl servRep;
 
     Alert alert;
-
+    /**
+     * Конструктор для заполнения объектов {@link OrderRepositoryImpl},{@link GuardedObjectRepositoryImpl},{@link ServiceRepositoryImpl}
+     * */
     public OrderDetailRepositoryImpl() {
         this.ordRep = new OrderRepositoryImpl();
         this.objRep = new GuardedObjectRepositoryImpl();
         this.servRep = new ServiceRepositoryImpl();
         this.alert = null;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Collection<OrderDetail> findAll() {
         Collection<OrderDetail> orderDetails = null;
@@ -60,7 +75,9 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
         }
         return orderDetails;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Optional<OrderDetail> findOneById(int id) {
         try {
@@ -88,6 +105,11 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
         }
         return Optional.empty();
     }
+    /**
+     * Метод для определения новая запись или уже существующая
+     * @param orderDetail передаваемая запись
+     * @return {@link PreparedStatement} с соответствующей командой
+     * */
     private PreparedStatement InsertOrUpdate(OrderDetail orderDetail) throws SQLException {
         PreparedStatement pstm = null;
         if (orderDetail == null) {
@@ -117,6 +139,9 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
         }
         return pstm;
     }
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int save(OrderDetail orderDetail) {
         PreparedStatement statement = null;
@@ -135,7 +160,9 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
         }
         return rows;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int delete(OrderDetail orderDetail) {
         int rows = 0;
@@ -148,6 +175,10 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
         }
         return rows;
     }
+    /** Функция для создания коллекции всех записей
+     * @param resultSet данные полученные из базы данных
+     * @return {@link Collection} со всеми записями
+     * */
     private Collection<OrderDetail> mapper(ResultSet resultSet) throws SQLException {
         Collection<OrderDetail> orderDetails = new ArrayList<>();
         while (resultSet.next()){

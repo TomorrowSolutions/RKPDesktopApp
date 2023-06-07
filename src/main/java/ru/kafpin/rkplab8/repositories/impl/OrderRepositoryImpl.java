@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.*;
+import ru.kafpin.rkplab8.repositories.inter.OrderDetailRepository;
 import ru.kafpin.rkplab8.repositories.inter.OrderRepository;
 
 import java.sql.PreparedStatement;
@@ -15,19 +16,31 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
+/**
+ * Реализация {@link OrderRepository}
+ * */
 public class OrderRepositoryImpl implements OrderRepository {
+    /**
+     * Объект {@link ClientRepositoryImpl} для внешнего ключа
+     * */
     ClientRepositoryImpl clRep;
+    /**
+     * Объект {@link ManagerRepositoryImpl} для внешнего ключа
+     * */
     ManagerRepositoryImpl manRep;
 
     Alert alert;
-
+    /**
+     * Конструктор для заполнения объектов {@link ClientRepositoryImpl},{@link ManagerRepositoryImpl}
+     * */
     public OrderRepositoryImpl() {
         this.clRep = new ClientRepositoryImpl();
         this.manRep = new ManagerRepositoryImpl();
         this.alert = null;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Collection<Order> findAll() {
         Collection<Order> orders = null;
@@ -57,7 +70,9 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return orders;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Optional<Order> findOneById(int id) {
         try {
@@ -84,6 +99,11 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return Optional.empty();
     }
+    /**
+     * Метод для определения новая запись или уже существующая
+     * @param order передаваемая запись
+     * @return {@link PreparedStatement} с соответствующей командой
+     * */
     private PreparedStatement InsertOrUpdate(Order order) throws SQLException {
         PreparedStatement pstm = null;
         if (order == null) {
@@ -115,6 +135,9 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return pstm;
     }
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int save(Order order) {
         PreparedStatement statement = null;
@@ -133,7 +156,9 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return rows;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int delete(Order order) {
         int rows = 0;
@@ -146,6 +171,10 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return rows;
     }
+    /** Функция для создания коллекции всех записей
+     * @param resultSet данные полученные из базы данных
+     * @return {@link Collection} со всеми записями
+     * */
     private Collection<Order> mapper(ResultSet resultSet) throws SQLException {
         Collection<Order> orders = new ArrayList<>();
         while (resultSet.next()){

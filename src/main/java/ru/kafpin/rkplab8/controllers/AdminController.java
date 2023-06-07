@@ -696,6 +696,8 @@ public class AdminController {
         }
     }
     //endregion
+
+    //region Действия подробностей заказов
     public void onOdCreate(ActionEvent actionEvent) throws IOException {
         OrderDetail od = new OrderDetail();
         showDialog(od);
@@ -747,6 +749,7 @@ public class AdminController {
             updateOrderDetails();
         }
     }
+    //endregion
 
 
 

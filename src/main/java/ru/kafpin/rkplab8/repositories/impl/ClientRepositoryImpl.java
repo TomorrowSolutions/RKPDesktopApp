@@ -6,17 +6,22 @@ import javafx.stage.Modality;
 import ru.kafpin.rkplab8.SQLHelper;
 import ru.kafpin.rkplab8.models.Client;
 import ru.kafpin.rkplab8.models.TypeOfPerson;
+import ru.kafpin.rkplab8.repositories.inter.CategoryRepository;
 import ru.kafpin.rkplab8.repositories.inter.ClientRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
+/**
+ * Реализация {@link ClientRepository}
+ * */
 public class ClientRepositoryImpl implements ClientRepository {
     private Alert alert =null;
 
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Collection<Client> findAll() {
         Collection<Client> Clients = null;
@@ -46,7 +51,9 @@ public class ClientRepositoryImpl implements ClientRepository {
         }
         return Clients;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public Optional<Client> findOneById(int id) {
         try {
@@ -73,7 +80,11 @@ public class ClientRepositoryImpl implements ClientRepository {
         }
         return Optional.empty();
     }
-
+    /**
+     * Метод для определения новая запись или уже существующая
+     * @param client передаваемая запись
+     * @return {@link PreparedStatement} с соответствующей командой
+     * */
     private PreparedStatement InsertOrUpdate(Client client) throws SQLException {
         PreparedStatement statement = null;
         if (client == null) {
@@ -113,6 +124,9 @@ public class ClientRepositoryImpl implements ClientRepository {
         }
         return statement;
     }
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int save(Client client) {
         PreparedStatement statement = null;
@@ -131,7 +145,9 @@ public class ClientRepositoryImpl implements ClientRepository {
         }
         return rows;
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public int delete(Client client) {
         int rows=0;
@@ -144,6 +160,10 @@ public class ClientRepositoryImpl implements ClientRepository {
         }
         return rows;
     }
+    /** Функция для создания коллекции всех записей
+     * @param resultSet данные полученные из базы данных
+     * @return {@link Collection} со всеми записями
+     * */
     private Collection<Client> mapper(ResultSet resultSet) throws SQLException {
         Collection<Client> clients = new ArrayList<>();
         Client client;
